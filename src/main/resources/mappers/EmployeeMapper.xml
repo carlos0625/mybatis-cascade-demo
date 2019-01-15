@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.learn.mybatis.mapper.EmployeeMapper">
+
+    <!-- 定义父类型Employee的resultMap-->
+    <resultMap id="EmployeeMapper" type="com.learn.mybatis.pojo.Employee">
+        <id column="id" property="id"/>
+        <result column="real_name" property="realName"/>
+        <result column="sex" property="sex" typeHandler="com.learn.mybatis.typeHandler.SexTypeHandler"/>
+        <result column="birthday" property="birthday"/>
+        <result column="mobile" property="mobile"/>
+        <result column="email" property="email"/>
+        <result column="position" property="position"/>
+        <result column="note" property="note"/>
+
+        <!-- 一对一连接工牌 -->
+        <association property="workCard" column="id"
+                     select="com.learn.mybatis.mapper.WorkCardMapper.findWorkCardByEmpId"/>
+
+        <!-- 一对多连接雇员任务 -->
+        <collection property="employeeTaskList" column="id"
+                    select="com.learn.mybatis.mapper.EmployeeTaskMapper.findEmployeeTasksByEmpId"/>
+
+        <!-- 鉴别器，通过 sex 字段来鉴别，从而确定父类的具体类型 -->
+        <discriminator javaType="long" column="sex">
+            <case value="1" resultMap="MaleEmployeeMapper"/>
+            <case value="0" resultMap="FemaleEmployeeMapper"/>
+        </discriminator>
+    </resultMap>
+
+
+    <!-- 子类型 MaleEmployee -->
+    <resultMap id="MaleEmployeeMapper" type="com.learn.mybatis.pojo.MaleEmployee"
+               extends="EmployeeMapper">
+        <!-- 确定了子类型后，通过子类型来进行一对一映射 -->
+        <association property="maleHealthForm" column="id"
+                     select="com.learn.mybatis.mapper.MaleHealthFormMapper.findMaleHealthFormByEmpId"/>
+    </resultMap>
+
+
+    <!-- 子类型 FemaleEmployee -->
+    <resultMap id="FemaleEmployeeMapper" type="com.learn.mybatis.pojo.FemaleEmployee"
+               extends="EmployeeMapper">
+        <!-- 确定了子类型后，通过子类型来进行一对一映射 -->
+        <association property="femaleHealthForm" column="id"
+                     select="com.learn.mybatis.mapper.FemaleHealthFormMapper.findFemaleHealthFormByEmpId"/>
+    </resultMap>
+
+
+    <!-- 按雇员的id查找-->
+    <select id="findEmployeeById" parameterType="long" resultMap="EmployeeMapper">
+        select id, real_name, sex, birthday, mobile, email, position, note
+        from t_employee
+        where id = #{id}
+    </select>
+
+
+    <!-- 查询所有雇员-->
+    <select id="findAll" resultMap="EmployeeMapper">
+        select id, real_name, sex, birthday, mobile, email, position, note
+        from  t_employee
+    </select>
+
+</mapper>
