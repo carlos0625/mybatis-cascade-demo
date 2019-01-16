@@ -5,8 +5,10 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 
 
-import static org.junit.Assert.*;
-
+/**
+ * a simple test for mybatis cascade, which cascade the employee、
+ * workcard、healthform、employeetask、task
+ */
 public class MyBatisUtilTest {
 
     private Logger logger = Logger.getLogger(MyBatisUtilTest.class);
