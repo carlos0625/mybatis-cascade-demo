@@ -17,8 +17,9 @@ public class Employee {
     private Long id;
     private String realName;
     private Sex sex;
-    private Date date;
+    private Date birthday;
     private String mobile;
+    private String email;
     private String position;
     private String note;
     private WorkCard workCard;
@@ -48,12 +49,12 @@ public class Employee {
         this.sex = sex;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getBirthday() {
+        return birthday;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     public String getMobile() {
@@ -96,15 +97,24 @@ public class Employee {
         this.employeeTaskList = employeeTaskList;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
                 "id=" + id +
                 ", realName='" + realName + '\'' +
                 ", sex=" + sex +
-                ", date=" + date +
+                ", birthday=" + birthday +
                 ", mobile='" + mobile + '\'' +
                 ", position='" + position + '\'' +
+                ", email='" + email + '\'' +
                 ", note='" + note + '\'' +
                 ", workCard=" + workCard +
                 ", employeeTaskList=" + employeeTaskList +
